@@ -47,7 +47,7 @@ try-argo-cd/
 | GKE 集群 / context | `argocd-lab`（us-central1-a，zonal）/ `gke-argocd-lab` |
 | Argo CD UI | 本地 `https://localhost:8443`，GKE `https://localhost:9443`（都通过 port-forward） |
 | 示例应用入口 | 本地 `http://hello.localhost:8080`（k3d 的 Traefik） |
-| Git 仓库 | GitHub 公开仓库 `<you>/try-argo-cd` |
+| Git 仓库 | GitHub 公开仓库 `GreatTyrion/try-argo-cd` |
 
 ## 常用命令
 ```bash
@@ -61,8 +61,8 @@ argocd app list
 ## 当前进度
 最后更新：2026-10-15
 
-- [x] 制定学习方案、审计参考项目、建立目录骨架（本地已 `git init`，**尚未 commit，也没有远程仓库**）
-- [ ] 第 0 步 初始化项目仓库（commit 并创建 GitHub 仓库）
+- [x] 制定学习方案、审计参考项目、建立目录骨架
+- [x] 第 0 步 初始化项目仓库（2026-10-15：commit `1dce157` 已推送到 https://github.com/GreatTyrion/try-argo-cd ，公开仓库）
 - [ ] 第 1 步 安装本地工具
 - [ ] 第 2 步 创建本地 k3d 集群
 - [ ] 第 3 步 手动安装 Argo CD

@@ -44,7 +44,7 @@ GitHub 仓库 try-argo-cd ──(拉取)──▶ Argo CD（运行在集群内�
 | gcloud CLI | 最新 | GCP 操作 |
 | Terraform / google provider | v1.16.6 / ~> 8.7 | 基础设施即代码 |
 
-**命名约定**：本地集群叫 `argocd-lab`（kube context：`k3d-argocd-lab`），GKE 集群也叫 `argocd-lab`（context 重命名为 `gke-argocd-lab`），GitHub 仓库叫 `<你的GitHub用户名>/try-argo-cd`。下文用 `<you>` 代替你的 GitHub 用户名。
+**命名约定**：本地集群叫 `argocd-lab`（kube context：`k3d-argocd-lab`），GKE 集群也叫 `argocd-lab`（context 重命名为 `gke-argocd-lab`），GitHub 仓库为 [`GreatTyrion/try-argo-cd`](https://github.com/GreatTyrion/try-argo-cd)（公开）。
 
 ---
 
@@ -56,8 +56,9 @@ GitHub 仓库 try-argo-cd ──(拉取)──▶ Argo CD（运行在集群内�
 ```bash
 cd ~/Documents/projects/learn-argo-cd/try-argo-cd
 git status                                  # 本地已初始化 git，目录骨架已建好
-git add -A && git commit -m "chore: project skeleton and learning plan"
-gh repo create try-argo-cd --public --source=. --push
+git add -A && git commit -m "Initiate project"
+git remote add origin https://github.com/GreatTyrion/try-argo-cd.git   # 仓库已在 GitHub 网页上创建
+git push -u origin main
 ```
 
 **为什么**
@@ -65,8 +66,9 @@ GitOps 的核心思想是「**Git 是唯一的事实来源**」：Argo CD 从 Gi
 
 **成功标准**
 - `git status` 输出 `nothing to commit, working tree clean`。
-- `gh repo view <you>/try-argo-cd --web` 能在浏览器里看到 `docs/`、`prompts/` 等目录。
-- `git remote -v` 显示 `origin  https://github.com/<you>/try-argo-cd.git`。
+- 打开 https://github.com/GreatTyrion/try-argo-cd 能看到 `docs/`、`prompts/` 等目录。
+- `git ls-remote origin main` 输出的 commit 与 `git rev-parse HEAD` 相同。
+- `git remote -v` 显示 `origin  https://github.com/GreatTyrion/try-argo-cd.git`。
 
 ## 第 1 步：安装本地工具
 
@@ -232,7 +234,7 @@ argocd app delete guestbook --yes
    spec:
      project: default
      source:
-       repoURL: https://github.com/<you>/try-argo-cd.git
+       repoURL: https://github.com/GreatTyrion/try-argo-cd.git
        targetRevision: HEAD
        path: apps/hello/overlays/local
      destination:
@@ -282,7 +284,7 @@ argocd app delete guestbook --yes
          helm:
            valueFiles:
              - $values/apps/podinfo/values-local.yaml
-       - repoURL: https://github.com/<you>/try-argo-cd.git
+       - repoURL: https://github.com/GreatTyrion/try-argo-cd.git
          targetRevision: HEAD
          ref: values          # 让上面的 $values 指向本仓库根目录
      destination:
@@ -327,7 +329,7 @@ argocd app delete guestbook --yes
    spec:
      project: default
      source:
-       repoURL: https://github.com/<you>/try-argo-cd.git
+       repoURL: https://github.com/GreatTyrion/try-argo-cd.git
        targetRevision: HEAD
        path: bootstrap/argocd/overlays/local
      destination:
@@ -350,7 +352,7 @@ argocd app delete guestbook --yes
    spec:
      project: default
      source:
-       repoURL: https://github.com/<you>/try-argo-cd.git
+       repoURL: https://github.com/GreatTyrion/try-argo-cd.git
        targetRevision: HEAD
        path: clusters/local
        directory:
@@ -386,7 +388,7 @@ argocd app delete guestbook --yes
      namespace: argocd
    spec:
      sourceRepos:
-       - https://github.com/<you>/try-argo-cd.git
+       - https://github.com/GreatTyrion/try-argo-cd.git
        - https://stefanprodan.github.io/podinfo
      destinations:
        - server: https://kubernetes.default.svc
@@ -410,7 +412,7 @@ argocd app delete guestbook --yes
      goTemplateOptions: ["missingkey=error"]
      generators:
        - git:
-           repoURL: https://github.com/<you>/try-argo-cd.git
+           repoURL: https://github.com/GreatTyrion/try-argo-cd.git
            revision: HEAD
            directories:
              - path: apps/*/overlays/local
@@ -420,7 +422,7 @@ argocd app delete guestbook --yes
        spec:
          project: learning
          source:
-           repoURL: https://github.com/<you>/try-argo-cd.git
+           repoURL: https://github.com/GreatTyrion/try-argo-cd.git
            targetRevision: HEAD
            path: '{{.path.path}}'
          destination:
@@ -452,7 +454,7 @@ argocd app delete guestbook --yes
    ```
    再给 Service 加 `argocd.argoproj.io/sync-wave: "0"`，给 Deployment 加 `argocd.argoproj.io/sync-wave: "1"`。
 4. **验证项目限制**：临时把 podinfo 的 destination namespace 改成 `kube-system` 再 push，观察报错，然后 `git revert`。
-5. （可选）私有仓库：把仓库改成 private，用 `argocd repo add https://github.com/<you>/try-argo-cd.git --username <you> --password <fine-grained PAT>` 添加凭证，观察应用恢复正常。练习完改回 public，或者保留凭证。
+5. （可选）私有仓库：把仓库改成 private，用 `argocd repo add https://github.com/GreatTyrion/try-argo-cd.git --username GreatTyrion --password <fine-grained PAT>` 添加凭证，观察应用恢复正常。练习完改回 public，或者保留凭证。
 
 **为什么**
 - **AppProject** 就像团队的权限边界：限制「能从哪些仓库部署、能部署到哪些 namespace、能创建哪些集群级资源」。生产环境里，`default` 项目不应该给业务应用用。

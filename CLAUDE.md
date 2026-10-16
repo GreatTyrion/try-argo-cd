@@ -63,7 +63,7 @@ argocd app list
 
 - [x] 制定学习方案、审计参考项目、建立目录骨架
 - [x] 第 0 步 初始化项目仓库（2026-10-15：commit `1dce157` 已推送到 https://github.com/GreatTyrion/try-argo-cd ，公开仓库）
-- [ ] 第 1 步 安装本地工具
+- [x] 第 1 步 安装本地工具（2026-10-15：k3d v5.9.0、kustomize v5.8.3、helm v4.3.1、argocd v3.5.5、sops 3.13.3、age v1.3.2；Docker Desktop 29.4.3，内存 7.75 GiB）
 - [ ] 第 2 步 创建本地 k3d 集群
 - [ ] 第 3 步 手动安装 Argo CD
 - [ ] 第 4 步 第一个 Application（guestbook）

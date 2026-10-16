@@ -1,0 +1,27 @@
+# Secrets: plaintext must end in -unencrypted.yaml; only *-sops.yaml is committed
+*-unencrypted.yaml
+*.agekey
+keys.txt
+*.pem
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+tfplan
+crash.log
+crash.*.log
+.terraform.tfstate.lock.info
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Helm / Kustomize chart downloads
+**/charts/
+
+# Local tooling
+.claude/
+.DS_Store

@@ -25,7 +25,7 @@ try-argo-cd/
 ├── .gitignore
 ├── prompts/                  # 驱动 Claude 的 prompt（prompt-01.md = 制定学习方案）
 ├── docs/                     # 方案、审计、费用文档
-├── local/                    # k3d 集群配置（k3d-config.yaml，第 2 步）
+├── local/k3d-config.yaml     # k3d 集群配置（第 2 步，已完成）
 ├── bootstrap/
 │   ├── argocd/base/          # Argo CD 安装：远程 install.yaml（v3.5.5）+ KSOPS 补丁（第 7、9 步）
 │   ├── argocd/overlays/{local,gke}/   # 各环境的 Argo CD 配置差异
@@ -59,12 +59,12 @@ argocd app list
 ```
 
 ## 当前进度
-最后更新：2026-10-15
+最后更新：2026-11-04
 
 - [x] 制定学习方案、审计参考项目、建立目录骨架
 - [x] 第 0 步 初始化项目仓库（2026-10-15：commit `1dce157` 已推送到 https://github.com/GreatTyrion/try-argo-cd ，公开仓库）
 - [x] 第 1 步 安装本地工具（2026-10-15：k3d v5.9.0、kustomize v5.8.3、helm v4.3.1、argocd v3.5.5、sops 3.13.3、age v1.3.2；Docker Desktop 29.4.3，内存 7.75 GiB）
-- [ ] 第 2 步 创建本地 k3d 集群
+- [x] 第 2 步 创建本地 k3d 集群（2026-11-04：`local/k3d-config.yaml`；k3s v1.35.5+k3s1，1 个节点 Ready，Traefik 通过 localhost:8080 可访问）
 - [ ] 第 3 步 手动安装 Argo CD
 - [ ] 第 4 步 第一个 Application（guestbook）
 - [ ] 第 5 步 自己的应用，跑通 GitOps 闭环
@@ -80,4 +80,5 @@ argocd app list
 - [ ] 第 15 步（可选）多集群
 - [ ] 第 16 步 清理云端资源
 
+当前本地资源：k3d 集群 `argocd-lab`（删除：`k3d cluster delete argocd-lab`）。
 当前云端资源：**无**（还没有创建任何 GCP 资源，费用 $0）。

@@ -1,0 +1,26 @@
+# k3d cluster for local Argo CD experiments (learning-plan step 2).
+#
+#   k3d cluster create --config local/k3d-config.yaml
+#   k3d cluster delete argocd-lab
+#
+# One server node, no agents, metrics-server disabled to save memory.
+# The bundled Traefik is kept so Ingresses are reachable at http://<host>.localhost:8080.
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: argocd-lab
+servers: 1
+agents: 0
+ports:
+  # Traefik web entrypoint -> http://localhost:8080
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true
+  k3s:
+    extraArgs:
+      - arg: --disable=metrics-server
+        nodeFilters:
+          - server:*

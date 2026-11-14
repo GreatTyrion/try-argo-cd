@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# No namespace here: the Argo CD Application's destination decides it.
+resources:
+  - deployment.yaml
+  - service.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/name: hello
+    includeSelectors: true
+
+# The generated ConfigMap name carries a content hash, so changing the page
+# changes the name and triggers a rolling update of the Deployment.
+configMapGenerator:
+  - name: hello-page
+    files:
+      - index.html

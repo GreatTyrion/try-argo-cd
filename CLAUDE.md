@@ -37,7 +37,7 @@ try-argo-cd/
 ├── infra/terraform/gke/      # GKE zonal 集群 + Spot 节点池（第 12 步）
 └── scripts/                  # bootstrap-local.sh / teardown-local.sh / bootstrap-gke.sh
 ```
-目前大部分目录只有 `.gitkeep`。具体文件由用户按方案逐步编写。
+`apps/hello/{base,overlays/local}` 和 `clusters/local/hello.yaml` 已写好（第 5 步）；其余目录目前只有 `.gitkeep`，按方案逐步编写。
 
 ## 关键约定
 | 项目 | 值 |
@@ -59,15 +59,15 @@ argocd app list
 ```
 
 ## 当前进度
-最后更新：2026-11-04
+最后更新：2026-11-14
 
 - [x] 制定学习方案、审计参考项目、建立目录骨架
 - [x] 第 0 步 初始化项目仓库（2026-10-15：commit `1dce157` 已推送到 https://github.com/GreatTyrion/try-argo-cd ，公开仓库）
 - [x] 第 1 步 安装本地工具（2026-10-15：k3d v5.9.0、kustomize v5.8.3、helm v4.3.1、argocd v3.5.5、sops 3.13.3、age v1.3.2；Docker Desktop 29.4.3，内存 7.75 GiB）
 - [x] 第 2 步 创建本地 k3d 集群（2026-11-04：`local/k3d-config.yaml`；k3s v1.35.5+k3s1，1 个节点 Ready，Traefik 通过 localhost:8080 可访问）
-- [ ] 第 3 步 手动安装 Argo CD
-- [ ] 第 4 步 第一个 Application（guestbook）
-- [ ] 第 5 步 自己的应用，跑通 GitOps 闭环
+- [x] 第 3 步 手动安装 Argo CD（2026-11-04：v3.5.5，7 个组件 Running；admin 密码已改，`argocd-initial-admin-secret` 已删除）
+- [x] 第 4 步 第一个 Application（guestbook）（2026-11-04：手动 sync，观察到 OutOfSync/Missing → Synced/Progressing → Synced/Healthy；手动 scale 后出现漂移，Manual 模式下不自动修复；已删除）
+- [x] 第 5 步 自己的应用，跑通 GitOps 闭环（2026-11-14：`apps/hello/{base,overlays/local}` + `clusters/local/hello.yaml`；实验 A–D 全部通过，对应 commit `71a0c76` 扩到 2 副本、`4c48d9c` 删 Ingress 被 prune、`7f9c082` revert 恢复；自愈约 2 秒）
 - [ ] 第 6 步 Helm 多源应用（podinfo）
 - [ ] 第 7 步 App of Apps，Argo CD 管理自己
 - [ ] 第 8 步 AppProject、ApplicationSet、同步顺序
@@ -80,5 +80,5 @@ argocd app list
 - [ ] 第 15 步（可选）多集群
 - [ ] 第 16 步 清理云端资源
 
-当前本地资源：k3d 集群 `argocd-lab`（删除：`k3d cluster delete argocd-lab`）。
+当前本地资源：k3d 集群 `argocd-lab`（删除：`k3d cluster delete argocd-lab`），已手动安装 Argo CD v3.5.5（namespace `argocd`），Application `hello`（namespace `hello`，自动同步）。Docker 重启后需要 `k3d cluster start argocd-lab` 并重新 port-forward；`argocd` CLI 的 token 24 小时过期，需要用户在自己的终端重新 `argocd login`。
 当前云端资源：**无**（还没有创建任何 GCP 资源，费用 $0）。

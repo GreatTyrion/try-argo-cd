@@ -25,3 +25,5 @@ override.tf.json
 # Local tooling
 .claude/
 .DS_Store
+
+.env
